@@ -5,15 +5,20 @@ branding:
   color: 'yellow'
   icon: 'layers'
 
-input:
+inputs:
   version:
-    description: 'HHVM version'
+    description: 'HHVM version to install'
     default: 'stable'
     required: true
 
 runs:
   using: 'composite'
   steps:
+
+    - name: "installing composer"
+      shell: bash
+      run: $/scripts/composer.sh
+
     - name: "installing hhvm"
       shell: bash
       run: |
@@ -22,7 +27,7 @@ runs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
           sudo apt-get install -y software-properties-common apt-transport-https
-          sudo apt-key add hhvm.gpg
+          sudo apt-key add resources/hhvm.gpg
           if [ "${{inputs.version}}" = 'nightly' ]; then
             sudo add-apt-repository https://dl.hhvm.com/ubuntu
             sudo apt-get install -y hhvm-nightly
