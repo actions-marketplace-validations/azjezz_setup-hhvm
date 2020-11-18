@@ -22,7 +22,7 @@ runs:
     - name: "installing hhvm"
       shell: bash
       run: |
-        if [ "$RUNNER_OS" === "Linux" ]; then
+        if [ "$RUNNER_OS" = "Linux" ]; then
           set -ex
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
@@ -40,7 +40,7 @@ runs:
               "deb https://dl.hhvm.com/ubuntu ${DISTRO}-${{inputs.version}} main"
             sudo apt-get install -y hhvm
           fi
-        elif [ "$RUNNER_OS" === "macOS"]; then
+        elif [ "$RUNNER_OS" = "macOS"]; then
           brew tap hhvm/hhvm
           if [ "${{inputs.version}}" = 'latest' ]; then
             brew install hhvm
