@@ -5,6 +5,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
       matrix:
         hhvm: ["4.84", "latest", "nightly"]
         os: ["macos-latest", "ubuntu-latest"]
