@@ -12,7 +12,7 @@ input:
     required: true
   php-version:
     description: 'PHP version to use'
-    default '7.4'
+    default: '7.4'
     required: false
 
 runs:
