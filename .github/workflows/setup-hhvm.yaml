@@ -17,13 +17,13 @@ jobs:
         os:
           - "macos-latest"
           - "ubuntu-latest"
-      
+
     steps:
       - name: "checkout"
         uses: "actions/checkout@v2"
 
       - name: "setting up hhvm & composer"
-        uses: "azjezz/setup-hhvm@alpha"
+        uses: "azjezz/setup-hhvm@v0.1"
         with:
           version: ${{ matrix.hhvm }}
 

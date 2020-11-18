@@ -1,6 +1,6 @@
 name: 'Setup HHVM Action'
 author: azjezz
-description: 'setup HHVM stable, and nightly releases, with composer available globally to use.'
+description: 'setup HHVM with ease.'
 branding:
   color: 'yellow'
   icon: 'layers'
@@ -10,20 +10,10 @@ input:
     description: 'HHVM version'
     default: 'stable'
     required: true
-  php-version:
-    description: 'PHP version to use'
-    default: '7.4'
-    required: false
 
 runs:
   using: 'composite'
   steps:
-    - name: 'installing php'
-      uses: 'shivammathur/setup-php@v2'
-      with:
-        php-version: ${{ inputs.php-version }}
-        tools: composer
-
     - name: "installing hhvm"
       shell: bash
       run: |
