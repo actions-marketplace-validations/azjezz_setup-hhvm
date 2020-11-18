@@ -18,14 +18,14 @@ input:
 runs:
   using: 'composite'
   steps:
-    name: 'installing php'
-    uses: 'shivammathur/setup-php@v2'
-    with:
+    - name: 'installing php'
+      uses: 'shivammathur/setup-php@v2'
+      with:
         php-version: ${{ inputs.php-version }}
         tools: composer
 
-    name: "installing hhvm"
-      if: matrix.os == 'ubuntu-latest'
+    - name: "installing hhvm"
+      shell: bash
       run: |
         if [ "$RUNNER_OS" === "Linux" ]; then
           set -ex
@@ -56,4 +56,3 @@ runs:
           echo "$RUNNER_OS is not currently supported"
           exit 1
         fi
-      shell: bash
