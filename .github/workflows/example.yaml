@@ -8,10 +8,10 @@ jobs:
       matrix:
         hhvm:
           - "4.84"
-          - "latest"
-          - "nightly"
+          #- "latest"
+          #- "nightly"
         os:
-          - "macos-latest"
+          #- "macos-latest"
           - "ubuntu-latest"
 
     steps:
