@@ -15,9 +15,8 @@ runs:
   using: 'composite'
   steps:
 
-    - name: "installing composer"
+    - run: ${{ github.action_path }}/scripts/composer.sh
       shell: bash
-      run: scripts/composer.sh
 
     - name: "installing hhvm"
       shell: bash
@@ -27,7 +26,7 @@ runs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
           sudo apt-get install -y software-properties-common apt-transport-https
-          sudo apt-key add resources/hhvm.gpg
+          sudo apt-key add ${{ github.action_path }}/resources/hhvm.gpg
           if [ "${{inputs.version}}" = 'nightly' ]; then
             sudo add-apt-repository https://dl.hhvm.com/ubuntu
             sudo apt-get install -y hhvm-nightly
@@ -40,7 +39,7 @@ runs:
               "deb https://dl.hhvm.com/ubuntu ${DISTRO}-${{inputs.version}} main"
             sudo apt-get install -y hhvm
           fi
-        elif [ "$RUNNER_OS" = "macOS"]; then
+        elif [ "$RUNNER_OS" = "macOS" ]; then
           brew tap hhvm/hhvm
           if [ "${{inputs.version}}" = 'latest' ]; then
             brew install hhvm
