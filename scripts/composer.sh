@@ -12,4 +12,4 @@ if [ "$EXPECTED_CHECKSUM" != "$ACTUAL_CHECKSUM" ]; then
   exit 1
 fi
 
-exit php composer-setup.php --install-dir=/usr/local/bin --filename=composer && rm composer-setup.php
+exit $(php composer-setup.php --install-dir=/usr/local/bin --filename=composer) && $(rm composer-setup.php)
