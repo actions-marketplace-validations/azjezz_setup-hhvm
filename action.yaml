@@ -17,7 +17,7 @@ runs:
 
     - name: "installing composer"
       shell: bash
-      run: $/scripts/composer.sh
+      run: scripts/composer.sh
 
     - name: "installing hhvm"
       shell: bash
