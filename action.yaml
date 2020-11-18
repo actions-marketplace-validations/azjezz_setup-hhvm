@@ -1,0 +1,59 @@
+name: 'Setup HHVM Action'
+author: azjezz
+description: 'setup HHVM stable, and nightly releases, with composer available globally to use.'
+branding:
+  color: 'yellow'
+  icon: 'layers'
+
+input:
+  version:
+    description: 'HHVM version'
+    default: 'stable'
+    required: true
+  php-version:
+    description: 'PHP version to use'
+    default '7.4'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    name: 'installing php'
+    uses: 'shivammathur/setup-php@v2'
+    with:
+        php-version: ${{ inputs.php-version }}
+        tools: composer
+
+    name: "installing hhvm"
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        if [ "$RUNNER_OS" === "Linux" ]; then
+          set -ex
+          export DEBIAN_FRONTEND=noninteractive
+          sudo apt-get update
+          sudo apt-get install -y software-properties-common apt-transport-https
+          sudo apt-key add hhvm.gpg
+          if [ "${{inputs.version}}" = 'nightly' ]; then
+            sudo add-apt-repository https://dl.hhvm.com/ubuntu
+            sudo apt-get install -y hhvm-nightly
+          elif [ "${{inputs.version}}" = 'latest' ]; then
+            sudo add-apt-repository https://dl.hhvm.com/ubuntu
+            sudo apt-get install -y hhvm
+          else
+            DISTRO=$(lsb_release --codename --short)
+            sudo add-apt-repository \
+              "deb https://dl.hhvm.com/ubuntu ${DISTRO}-${{inputs.version}} main"
+            sudo apt-get install -y hhvm
+          fi
+        elif [ "$RUNNER_OS" === "macOS"]; then
+          brew tap hhvm/hhvm
+          if [ "${{inputs.version}}" = 'latest' ]; then
+            brew install hhvm
+          else
+            brew install hhvm-${{inputs.version}}
+          fi
+        else
+          echo "$RUNNER_OS is not currently supported"
+          exit 1
+        fi
+      shell: bash

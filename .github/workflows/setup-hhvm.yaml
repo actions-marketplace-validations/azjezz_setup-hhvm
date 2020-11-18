@@ -1,0 +1,41 @@
+name: 'setup-hhvm'
+
+on: ["push"]
+
+jobs:
+  setup-hhvm:
+    name: 'setup hhvm'
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        hhvm:
+          - "4.84"
+          - "latest"
+          - "nightly"
+        os:
+          - "macos-latest"
+          - "ubuntu-latest"
+      
+    steps:
+      - name: "checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "setting up hhvm & composer"
+        uses: "azjezz/setup-hhvm@v1"
+        with:
+          version: ${{ matrix.hhvm }}
+
+      - name: "inspecting PHP and Composer versions"
+        run: |
+          php --version
+          composer --version
+
+      - name: "inspecting HHVM and Hack versions"
+        run: |
+          hhvm --version
+          hh_client --version
+
+      - name: "running hack script"
+        run: "hhvm hello-world.hack"
