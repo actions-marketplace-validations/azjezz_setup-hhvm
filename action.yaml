@@ -18,13 +18,8 @@ inputs:
 runs:
   using: 'composite'
   steps:
-
     - shell: bash
       run: ${{ github.action_path }}/scripts/composer.sh
-
-    - shell: bash
-      run: |
-
 
     - shell: bash
       run: |
