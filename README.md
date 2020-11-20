@@ -28,9 +28,10 @@ jobs:
         uses: "actions/checkout@v2"
 
       - name: "setting up hhvm & composer"
-        uses: "azjezz/setup-hhvm@develop"
+        uses: "azjezz/setup-hhvm@v1"
         with:
           version: ${{ matrix.hhvm }}
+          debug: false
 
       - name: "installing dependencies"
         run: "composer install"
