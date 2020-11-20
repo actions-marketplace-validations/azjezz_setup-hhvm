@@ -4,9 +4,10 @@
 
 ## inputs
 
-| Name      | Description                                      |
-|-----------|--------------------------------------------------|
-| `version` | HHVM version ( e.g: '4.83', 'latest', 'nightly') |
+| Name      |    Type   | Required | Description                                                                                          |
+|-----------|-----------|--------- |------------------------------------------------------------------------------------------------------|
+| `version` | `string`  | `true`   | HHVM version ( e.g: '4.83', 'latest', 'nightly')                                                     |
+| `debug`   | `boolean` | `false`  | Install a debug build that is suitable for debuggers like gdb ( currently not supported for MacOS )  |
 
 ## usage
 

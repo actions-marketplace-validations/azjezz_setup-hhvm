@@ -7,25 +7,33 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        hhvm: ["4.84", "latest", "nightly"]
-        os: ["macos-latest", "ubuntu-latest"]
+        include:
+          - { hhvm: "4.84",    os: "ubuntu-latest", debug: true  }
+          - { hhvm: "latest",  os: "ubuntu-latest", debug: true  }
+          - { hhvm: "nightly", os: "ubuntu-latest", debug: true  }
+
+          - { hhvm: "4.84",    os: "ubuntu-latest", debug: false }
+          - { hhvm: "latest",  os: "ubuntu-latest", debug: false }
+          - { hhvm: "nightly", os: "ubuntu-latest", debug: false }
+
+          - { hhvm: "4.84",    os: "macos-latest" , debug: false }
+          - { hhvm: "latest",  os: "macos-latest" , debug: false }
+          - { hhvm: "nightly", os: "macos-latest" , debug: false }
 
     steps:
       - name: "checkout"
         uses: "actions/checkout@v2"
 
-      - name: "setting up hhvm & composer"
+      - name: "install hhvm"
         uses: "azjezz/setup-hhvm@develop"
         with:
           version: ${{ matrix.hhvm }}
+          debug: ${{ matrix.debug }}
 
-      - name: "inspecting PHP and Composer versions"
+      - name: "inspect"
         run: |
           php --version
           composer --version
-
-      - name: "inspecting HHVM and Hack versions"
-        run: |
           hhvm --version
           hh_client --version
 

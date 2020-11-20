@@ -10,16 +10,23 @@ inputs:
     description: 'HHVM version to install'
     default: 'stable'
     required: true
+  debug:
+    description: 'Install debug build that is suitable for debuggers like gdb'
+    default: false
+    required: false
 
 runs:
   using: 'composite'
   steps:
 
-    - run: ${{ github.action_path }}/scripts/composer.sh
-      shell: bash
+    - shell: bash
+      run: ${{ github.action_path }}/scripts/composer.sh
 
-    - name: "installing hhvm"
-      shell: bash
+    - shell: bash
+      run: |
+
+
+    - shell: bash
       run: |
         if [ "$RUNNER_OS" = "Linux" ]; then
           set -ex
@@ -29,24 +36,46 @@ runs:
           sudo apt-key add ${{ github.action_path }}/resources/hhvm.gpg
           if [ "${{inputs.version}}" = 'nightly' ]; then
             sudo add-apt-repository https://dl.hhvm.com/ubuntu
-            sudo apt-get install -y hhvm-nightly
+            if [ "${{inputs.debug}}" = "true" ]; then
+              sudo apt-get install -y hhvm-nightly-dbg
+            else
+              sudo apt-get install -y hhvm-nightly
+            fi
           elif [ "${{inputs.version}}" = 'latest' ]; then
             sudo add-apt-repository https://dl.hhvm.com/ubuntu
-            sudo apt-get install -y hhvm
+            if [ "${{inputs.debug}}" = "true" ]; then
+              sudo apt-get install -y hhvm-dbg
+            else
+              sudo apt-get install -y hhvm
+            fi
           else
             DISTRO=$(lsb_release --codename --short)
             sudo add-apt-repository \
               "deb https://dl.hhvm.com/ubuntu ${DISTRO}-${{inputs.version}} main"
-            sudo apt-get install -y hhvm
+            if [ "${{inputs.debug}}" = "true" ]; then
+              sudo apt-get install -y hhvm-dbg
+            else
+              sudo apt-get install -y hhvm
+            fi
           fi
         elif [ "$RUNNER_OS" = "macOS" ]; then
           brew tap hhvm/hhvm
           if [ "${{inputs.version}}" = 'latest' ]; then
+            if [ "${{inputs.debug}}" = "true" ]; then
+              echo "debug builds are not currently supported for MacOS."
+              exit 1
+            fi
+
             brew install hhvm
           else
+            if [ "${{inputs.debug}}" = "true" ]; then
+              echo "debug builds are not currently supported for MacOS."
+              exit 1
+            fi
+
             brew install hhvm-${{inputs.version}}
           fi
         else
-          echo "$RUNNER_OS is not currently supported"
+          echo "$RUNNER_OS is not currently supported."
           exit 1
         fi
