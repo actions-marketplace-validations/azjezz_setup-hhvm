@@ -25,7 +25,7 @@ jobs:
         uses: "actions/checkout@v2"
 
       - name: "install hhvm"
-        uses: "azjezz/setup-hhvm@develop"
+        uses: "azjezz/setup-hhvm@v1"
         with:
           version: ${{ matrix.hhvm }}
           debug: ${{ matrix.debug }}
