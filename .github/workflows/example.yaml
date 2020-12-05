@@ -8,17 +8,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { hhvm: "4.84",    os: "ubuntu-latest", debug: true  }
-          - { hhvm: "latest",  os: "ubuntu-latest", debug: true  }
-          - { hhvm: "nightly", os: "ubuntu-latest", debug: true  }
+          - { hhvm: "4.84",    os: "ubuntu-latest", debug: true, legacy: false  }
+          - { hhvm: "latest",  os: "ubuntu-latest", debug: true, legacy: false  }
+          - { hhvm: "nightly", os: "ubuntu-latest", debug: true, legacy: false  }
 
-          - { hhvm: "4.84",    os: "ubuntu-latest", debug: false }
-          - { hhvm: "latest",  os: "ubuntu-latest", debug: false }
-          - { hhvm: "nightly", os: "ubuntu-latest", debug: false }
+          - { hhvm: "4.84",    os: "ubuntu-latest", debug: false, legacy: false }
+          - { hhvm: "latest",  os: "ubuntu-latest", debug: false, legacy: false }
+          - { hhvm: "nightly", os: "ubuntu-latest", debug: false, legacy: false }
 
-          - { hhvm: "4.84",    os: "macos-latest" , debug: false }
-          - { hhvm: "latest",  os: "macos-latest" , debug: false }
-          - { hhvm: "nightly", os: "macos-latest" , debug: false }
+          - { hhvm: "4.84",    os: "macos-latest" , debug: false, legacy: false }
+          - { hhvm: "latest",  os: "macos-latest" , debug: false, legacy: false }
+          - { hhvm: "nightly", os: "macos-latest" , debug: false, legacy: false }
+
+          - { hhvm: "lts-3.30", os: "ubuntu-latest", debug: false, legacy: true }
+          - { hhvm: "lts-3.30", os: "ubuntu-latest", debug: true , legacy: true }
 
     steps:
       - name: "checkout"
@@ -38,4 +41,5 @@ jobs:
           hh_client --version
 
       - name: "running hack script"
+        if: ${{ matrix.legacy == false }}
         run: "hhvm scripts/example.hack"
